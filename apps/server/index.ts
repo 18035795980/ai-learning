@@ -115,7 +115,6 @@ app.post('/api/chat', async (req, res) => {
       messages: normalizeMessages(messages, latestMessage),
       stream: true,
     })
-    console.log('stream:', stream)
     for await (const chunk of stream) {
       const content = chunk.choices[0]?.delta?.content
       console.log('content:', chunk.choices[0])
