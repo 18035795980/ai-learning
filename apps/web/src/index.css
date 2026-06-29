@@ -1,0 +1,61 @@
+:root {
+  --text: #dce6ff;
+  --text-h: #f8fbff;
+  --text-subtle: #8ea2c8;
+  --bg: #050914;
+  --panel: rgba(8, 13, 25, 0.84);
+  --border: rgba(144, 169, 214, 0.18);
+  --accent: #7aa2ff;
+  --accent-strong: #b7cbff;
+  --accent-bg: rgba(122, 162, 255, 0.14);
+  --accent-border: rgba(122, 162, 255, 0.3);
+  --message-assistant: rgba(20, 29, 51, 0.92);
+  --message-user: rgba(10, 55, 52, 0.88);
+  --shadow: 0 30px 80px rgba(0, 0, 0, 0.38);
+
+  font: 16px/1.5 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at top, rgba(84, 125, 255, 0.2), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(141, 244, 198, 0.14), transparent 28%),
+    var(--bg);
+}
+
+h1,
+h2 {
+  color: var(--text-h);
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin: 0;
+}
+
+button,
+textarea {
+  font: inherit;
+}

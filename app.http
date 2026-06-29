@@ -1,0 +1,6 @@
+POST http://localhost:3001/api/chat
+Content-Type: application/json
+
+{
+  "message": "你好，我是张三"
+}
