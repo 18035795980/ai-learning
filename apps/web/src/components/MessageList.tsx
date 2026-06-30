@@ -1,10 +1,17 @@
-import type { ChatMessage } from './ChatApp'
+import { useAutoScroll } from '@/hooks/useAutoScroll'
+import MessageItem from './MessageItem'
+
+import type { ChatMessage } from '@type/chat'
 
 interface MessageListProps {
   messages: ChatMessage[]
 }
 
 export function MessageList({ messages }: MessageListProps) {
+  const { containerRef, bottomRef, hasNewMessage, scrollToBottom } = useAutoScroll({
+    dependency: messages,
+  })
+
   if (messages.length === 0) {
     return (
       <section className="message-list message-list--empty" aria-live="polite">
@@ -14,19 +21,22 @@ export function MessageList({ messages }: MessageListProps) {
   }
 
   return (
-    <section className="message-list" aria-live="polite">
-      {messages.map((message) => (
-        <article
-          key={message.id}
-          className={`message message--${message.role}`}
-          aria-label={`${message.role === 'user' ? '用户' : '助手'}消息`}
+    <div className="message-list-wrap">
+      <section className="message-list" aria-live="polite" ref={containerRef}>
+        {messages.map((message) => (
+          <MessageItem key={message.id} message={message} />
+        ))}
+        <div ref={bottomRef} aria-hidden="true" />
+      </section>
+      {hasNewMessage ? (
+        <button
+          type="button"
+          className="message-list__new-message"
+          onClick={scrollToBottom}
         >
-          <span className="message-role">
-            {message.role === 'user' ? 'You' : 'Assistant'}
-          </span>
-          <p>{message.content}</p>
-        </article>
-      ))}
-    </section>
+          有新消息
+        </button>
+      ) : null}
+    </div>
   )
 }

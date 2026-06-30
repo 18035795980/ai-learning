@@ -1,17 +1,20 @@
 .chat-shell {
-  min-height: 100svh;
+  height: 100svh;
   display: grid;
   place-items: center;
   padding: 32px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .chat-panel {
   width: min(920px, 100%);
-  min-height: 720px;
+  height: min(720px, calc(100svh - 64px));
+  max-height: calc(100svh - 64px);
   display: grid;
   grid-template-rows: auto 1fr auto;
   background:
-    linear-gradient(180deg, rgba(91, 140, 255, 0.16), rgba(91, 140, 255, 0))
+    linear-gradient(180deg, rgba(95, 135, 255, 0.08), rgba(95, 135, 255, 0))
       no-repeat,
     var(--panel);
   border: 1px solid var(--border);
@@ -46,22 +49,52 @@
 
 .chat-body {
   min-height: 0;
+  overflow: hidden;
   padding: 24px 20px;
+  display: flex;
+}
+
+.message-list-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
 }
 
 .chat-footer {
   padding: 20px;
   border-top: 1px solid var(--border);
-  background: rgba(9, 14, 26, 0.78);
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .message-list {
   height: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
   overflow: auto;
   padding-right: 8px;
+}
+
+.message-list__new-message {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: var(--accent-strong);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 12px 28px rgba(67, 92, 138, 0.18);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.message-list__new-message:hover {
+  background: #ffffff;
 }
 
 .message-list--empty {
@@ -85,13 +118,13 @@
 .message--assistant {
   align-self: flex-start;
   background: var(--message-assistant);
-  border-color: rgba(122, 162, 255, 0.16);
+  border-color: rgba(95, 135, 255, 0.14);
 }
 
 .message--user {
   align-self: flex-end;
   background: var(--message-user);
-  border-color: rgba(141, 244, 198, 0.18);
+  border-color: rgba(95, 135, 255, 0.24);
 }
 
 .message-role {
@@ -117,7 +150,7 @@
   border-radius: 20px;
   padding: 16px 18px;
   color: var(--text-h);
-  background: rgba(12, 18, 31, 0.88);
+  background: rgba(255, 255, 255, 0.94);
   font: inherit;
 }
 
@@ -143,8 +176,8 @@
   border-radius: 999px;
   padding: 12px 20px;
   min-width: 96px;
-  color: #08111f;
-  background: linear-gradient(135deg, #8df4c6, #7aa2ff);
+  color: #ffffff;
+  background: linear-gradient(135deg, #7ea4ff, #5f87ff);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
@@ -182,7 +215,8 @@
   }
 
   .chat-panel {
-    min-height: calc(100svh - 32px);
+    height: calc(100svh - 32px);
+    max-height: calc(100svh - 32px);
     border-radius: 24px;
   }
 
