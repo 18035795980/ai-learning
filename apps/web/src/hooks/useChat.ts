@@ -1,15 +1,24 @@
 // 只负责状态 useState useEffect 业务逻辑
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { chatApi } from '../api/chat'
 
 import type { ChatMessage } from '@type/chat'
 
+function isAbortError(error: unknown) {
+  return error instanceof DOMException && error.name === 'AbortError'
+}
 
 export function useChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [isSending, setIsSending] = useState(false)
+  const abortControllerRef = useRef<AbortController | null>(null)
+
+  const stopGenerating = () => {
+    abortControllerRef.current?.abort()
+    abortControllerRef.current = null
+  }
 
   const sendMessage = async (content: string) => {
     const trimmed = content.trim()
@@ -36,6 +45,8 @@ export function useChat() {
       assistantPlaceholder,
     ])
     setIsSending(true)
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
 
     try {
       const reply = await chatApi(
@@ -56,6 +67,7 @@ export function useChat() {
             ),
           )
         },
+        abortController.signal,
       )
 
       setMessages((currentMessages) =>
@@ -69,6 +81,20 @@ export function useChat() {
         ),
       )
     } catch (error) {
+      if (isAbortError(error)) {
+        setMessages((currentMessages) =>
+          currentMessages.map((currentMessage) =>
+            currentMessage.id === assistantMessageId
+              ? {
+                  ...currentMessage,
+                  content: currentMessage.content || '已停止生成。',
+                }
+              : currentMessage,
+          ),
+        )
+        return
+      }
+
       const message =
         error instanceof Error ? error.message : '请求 AI 服务失败，请稍后重试。'
 
@@ -83,6 +109,9 @@ export function useChat() {
         ),
       )
     } finally {
+      if (abortControllerRef.current === abortController) {
+        abortControllerRef.current = null
+      }
       setIsSending(false)
     }
   }
@@ -91,5 +120,6 @@ export function useChat() {
     messages,
     isSending,
     sendMessage,
+    stopGenerating,
   }
 }

@@ -31,12 +31,14 @@ export async function chatApi(
   input: string,
   messages: ChatApiMessage[],
   onChunk: (chunk: string) => void,
+  signal?: AbortSignal,
 ) {
   const response = await fetch('/api/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    signal,
     body: JSON.stringify({
       message: input,
       messages,

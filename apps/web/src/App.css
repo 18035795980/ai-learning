@@ -171,6 +171,12 @@
   font-size: 14px;
 }
 
+.input-box__buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .input-box__button {
   border: 0;
   border-radius: 999px;
@@ -187,9 +193,20 @@
     opacity 0.2s ease;
 }
 
+.input-box__button--secondary {
+  color: var(--accent-strong);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--accent-border);
+  box-shadow: none;
+}
+
 .input-box__button:hover:enabled {
   transform: translateY(-1px);
   box-shadow: 0 16px 30px rgba(122, 162, 255, 0.24);
+}
+
+.input-box__button--secondary:hover:enabled {
+  box-shadow: 0 10px 22px rgba(67, 92, 138, 0.12);
 }
 
 .input-box__button:disabled {
@@ -234,5 +251,10 @@
   .input-box__actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .input-box__buttons {
+    width: 100%;
+    flex-direction: column-reverse;
   }
 }

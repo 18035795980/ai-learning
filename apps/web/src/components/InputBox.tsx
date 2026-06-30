@@ -2,10 +2,17 @@ import { type FormEvent, type KeyboardEvent, useState } from 'react'
 
 interface InputBoxProps {
   onSend: (value: string) => void | Promise<void>
+  onStopGenerating: () => void
   disabled?: boolean
+  isGenerating?: boolean
 }
 
-export function InputBox({ onSend, disabled = false }: InputBoxProps) {
+export function InputBox({
+  onSend,
+  onStopGenerating,
+  disabled = false,
+  isGenerating = false,
+}: InputBoxProps) {
   const [value, setValue] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isLocked = disabled || isSubmitting
@@ -56,13 +63,24 @@ export function InputBox({ onSend, disabled = false }: InputBoxProps) {
       />
       <div className="input-box__actions">
         <p>当前阶段已接入 SSE 流式对话，服务端会持续推送模型生成的文本片段。</p>
-        <button
-          type="submit"
-          className="input-box__button"
-          disabled={isLocked || !value.trim()}
-        >
-          {isLocked ? '发送中...' : '发送'}
-        </button>
+        <div className="input-box__buttons">
+          {isGenerating ? (
+            <button
+              type="button"
+              className="input-box__button input-box__button--secondary"
+              onClick={onStopGenerating}
+            >
+              停止生成
+            </button>
+          ) : null}
+          <button
+            type="submit"
+            className="input-box__button"
+            disabled={isLocked || !value.trim()}
+          >
+            {isLocked ? '发送中...' : '发送'}
+          </button>
+        </div>
       </div>
     </form>
   )

@@ -8,12 +8,18 @@ export function ChatApp() {
     messages,
     isSending,
     sendMessage,
+    stopGenerating,
   } = useChat()
   return (
     <ChatContainer
       title="Streaming Chat UI"
       footer={
-        <InputBox onSend={sendMessage} disabled={isSending} />
+        <InputBox
+          onSend={sendMessage}
+          onStopGenerating={stopGenerating}
+          disabled={isSending}
+          isGenerating={isSending}
+        />
       }
     >
       <MessageList messages={messages} />
